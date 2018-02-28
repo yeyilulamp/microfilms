@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block css %}{% endblock %}
+{% block content %}
+    <!--热门电影-->
+    <section id="hotmovie" style="margin-top:76px">
+        <div class="container">
+            <div class="row wow fadeInRight" data-wow-delay="0.6s">
+                <div class="row">
+                    <iframe class="wow fadeIn" width="100%" height="375px" frameborder=0 scrolling=no
+                            src="{% url 'animation' %}"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--热门电影-->
+    <!--电影列表-->
+    <section id="movielist">
+        <div class="container">
+            <div class="row wow fadeIn" data-wow-delay="0.6s">
+                {% for movie in all_movies.object_list %}
+                    <div class="col-md-3">
+                        <div class="movielist text-center">
+                            <!--<img data-original="holder.js/262x166"
+                                     class="img-responsive lazy center-block" alt="">-->
+                            <img src="{{ MEDIA_URL }}{{ movie.image }}" class="img-responsive center-block" alt="">
+                            <div class="text-left" style="margin-left:auto;margin-right:auto;width:210px;">
+                                <span style="color:#999;font-style: italic;">{{ movie.title }}</span><br>
+                                <div>
+                                    {% for v in movie.star %}
+                                        <span class="glyphicon glyphicon-star" style="color:#FFD119"></span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'movie:movie_comment' movie.id %}" class="btn btn-primary"
+                                   target="_blank" role="button"><span
+                                        class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
+                            {% else %}
+                                <a href="{% url 'movie:movie_detail' movie.id %}" class="btn btn-primary"
+                                   target="_blank" role="button"><span
+                                        class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-md-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if all_movies.has_previous %}
+                                <li>
+                                    <a href="?{{ all_movies.previous_page_number.querystring }}" aria-label="First">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% for page in all_movies.pages %}
+                                {% if page %}
+                                    {% ifequal page all_movies.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_movies.has_next %}
+                                <li>
+                                    <a href="?{{ all_movies.next_page_number.querystring }}" aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--电影列表-->
+{% endblock %}
+{% block js %}
+{% endblock %}
+
+
+
+

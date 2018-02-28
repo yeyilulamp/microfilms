@@ -1,0 +1,81 @@
+{% extends 'nav_base.html' %}
+{% block css %}{% endblock %}
+{% block content %}
+    <!--内容-->
+    <div class="container" style="margin-top:76px">
+        {% include 'user_base.html' %}
+        <div class="col-md-9">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;评论记录</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="commentList">
+                        {% for movie_comment in movie_comments.object_list %}
+                        <li class="item cl">
+                            <a href="{% url 'users:user_info' %}">
+                                <i class="avatar size-L radius">
+                                    <img alt="50x50" width="50" height="50" src="{{ MEDIA_URL }}{{ movie_comment.user.image }}" class="img-circle"
+                                         style="border:1px solid #abcdef;">
+                                </i>
+                            </a>
+                            <div class="comment-main">
+                                <header class="comment-header">
+                                    <div class="comment-meta">
+                                        <a class="comment-author" href="{% url 'users:user_info' %}">{{ movie_comment.user.nick_name }}</a>
+                                        评论于
+                                        <time title="{{ movie_comment.add_time }}" datetime="{{ movie_comment.add_time }}">
+                                            {{ movie_comment.add_time }}
+                                        </time>
+                                    </div>
+                                </header>
+                                <div class="comment-body">
+                                    <p>{{ movie_comment.comments }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="col-md-12 text-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if movie_comments.has_previous %}
+                                    <li>
+                                        <a href="?{{ movie_comments.previous_page_number.querystring }}" aria-label="First">
+                                            <span aria-hidden="true">上一页</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% for page in movie_comments.pages %}
+                                    {% if page %}
+                                        {% ifequal page movie_comments.number %}
+                                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                        {% endifequal %}
+                                    {% else %}
+                                        <li class="none"><a href="">...</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if movie_comments.has_next %}
+                                    <li>
+                                        <a href="?{{ movie_comments.next_page_number.querystring }}" aria-label="Next">
+                                            <span aria-hidden="true">下一页</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--内容-->
+{% endblock %}
+{% block js %}{% endblock %}
+
+
+
+
+
