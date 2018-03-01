@@ -23,6 +23,8 @@ class UserProfile(AbstractUser):
     class Meta:
         verbose_name = u"用户信息"
         verbose_name_plural = verbose_name
+        # verbose_name_plural表示模型的复数形式即verbose_name + "s"
+        
 
     def __unicode__(self):
         return self.username
