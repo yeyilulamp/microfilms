@@ -55,7 +55,7 @@ class ActiveUserView(View):
                 return render(request, "login.html")
         else:
             return render(request, "register.html", {
-                "msg": "你的激活链接无效,请重新请求！",
+                "msg": "你的激活链接无效，请重新请求！",
                 "active_form": active_form
             })
 
@@ -77,8 +77,8 @@ class ForgetPwdView(View):
             # 发送找回密码邮件
             send_register_email(email, "forget")
             # 发送完毕返回登录页面并显示发送邮件成功
-            return render(request, "login.html", {"msg": "重置密码邮件已发送,请注意查收"})
-        # 如果表单验证失败就是验证码输错误
+            return render(request, "login.html", {"msg": "重置密码邮件已发送，请注意查收！"})
+        # 如果表单验证失败就是验证码输入错误
         else:
             return render(request, "forgetpwd.html", {"forget_form": forget_form})
 
@@ -97,7 +97,7 @@ class ResetView(View):
                 email = record.email
                 return render(request, "password_reset.html", {"email": email})
         else:
-            return render(request, "forgetpwd.html", {"msg": "你的重置密码无效，请重新请求", "active_form": active_form})
+            return render(request, "forgetpwd.html", {"msg": "你的重置密码无效，请重新请求！", "active_form": active_form})
 
 
 class ModifyPwdView(View):
@@ -125,7 +125,7 @@ class ModifyPwdView(View):
             email = request.POST.get('email', "")
             return render(request, "password_reset.html", {
                 "email": email,
-                "msg": "新密码至少5个字符,请重新输入",
+                "msg": "新密码至少5个字符，请重新输入！",
                 "modify_form": modify_form
             })
 
@@ -221,7 +221,7 @@ class UpdateEmailView(LoginRequiredMixin, View):
             user.save()
             return HttpResponse('{"status":"success"}', content_type="application/json")
         else:
-            return HttpResponse('{"email":"验证码出错！,请重新请求获取"}', content_type="application/json")
+            return HttpResponse('{"email":"验证码出错！请重新请求获取"}', content_type="application/json")
 
 
 class UserFavMovieView(LoginRequiredMixin, View):
@@ -311,7 +311,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    # 用户在已激活的状态下,将重定向到index首页
+                    # 用户在已激活的状态下,逆向解析查找URLconf返回index首页
                     return HttpResponseRedirect(reverse("index"))
                     # return render(request, "index.html")  # 跳转到对应的模板页面
                 else:
@@ -348,7 +348,7 @@ class RegisterView(View):
             user_profile.password = make_password(pass_word)
             user_profile.save()
             send_register_email(user_name, "register")
-            return render(request, "login.html")
+            return render(request, "login.html", {"msg": "用户激活链接的邮件已发送，请注意查收！"})
         else:
             return render(request, "register.html", {"register_form": register_form})
 
