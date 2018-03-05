@@ -52,7 +52,7 @@ class ActiveUserView(View):
                 user.is_active = True
                 user.save()
                 # 激活成功跳转到登录页面
-                return render(request, "login.html")
+                return render(request, "login.html", {"msg":"用户激活成功，请登录！"})
         else:
             return render(request, "register.html", {
                 "msg": "你的激活链接无效，请重新请求！",
